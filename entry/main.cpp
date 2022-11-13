@@ -1,6 +1,7 @@
 #include <iostream>
 
-int main() {
+int main()
+{
     std::cout << "pogchamp uwu" << std::endl;
     return 0;
 }
