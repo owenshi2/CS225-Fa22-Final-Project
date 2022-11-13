@@ -15,5 +15,7 @@ class City
   private:
     int numFlightPaths;
     int pop;
+    std::vector<std::string> airports;
+    std::vector<int> flightDists;
     std::vector<City> connectedCities;
 };
