@@ -4,6 +4,6 @@
 
 int main(int argc, char* argv[])
 {
-  std::cout << "Hello";
+  std::cout << "Make Keli." << std::endl;
   return -1;
 }
