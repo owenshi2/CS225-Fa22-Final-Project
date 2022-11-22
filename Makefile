@@ -1,13 +1,14 @@
-CXX = claang++
-CXX_FLAGS=-std=c++20 -Iincludes -g -fstandalone-debug -O0 -Wall -Wextra -Werror
+CXX = clang++
+INCLUDES=-Iincludes/
+CXX_FLAGS=-std=c++20 -g $(INCLUDES)
 
-exec: entry/main
+exec: src/entry/main
 
-bin/exec: ./src/parser.cpp
+bin/exec:  src/main.cc src/parser.cpp
 	$(CXX) $(CXX_FLAGS) $^ -o $@
 
 .DEFAULT_GOAL := exec
-.PHONY: exec bin
+.PHONY: clean
 
 clean:
-	rm -f bin/*
+	rm -f bin/* obj/*
