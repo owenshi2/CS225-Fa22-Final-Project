@@ -29,22 +29,19 @@ std::vector<string> out;
 
 std::vector<std::string> getEmAndSplitEm(std::istream& str)
 {
-    std::vector<std::string>   result;
-    std::string                line;
-    std::getline(str,line);
-
-    std::stringstream lineStream(line);
-    std::string cell;
-
-    while(std::getline(lineStream,cell, ','))
-    {
-        result.push_back(cell);
-    }
-    // This checks for a trailing comma with no data after it.
-    if (!lineStream && cell.empty())
-    {
-        // If there was a trailing comma then add an empty element.
-        result.push_back("");
-    }
-    return result;
+  std::vector<std::string> result;
+  std::string line;
+  std::getline(str,line);
+  std::stringstream lineStream(line);
+  std::string cell;
+  while(std::getline(lineStream,cell, ','))
+  {
+    result.push_back(cell);
+  }
+  if (!lineStream && cell.empty())
+  {
+    result.push_back("");
+  }
+  return result;
 }
+
