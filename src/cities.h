@@ -20,10 +20,11 @@
 //     std::vector<City> connectedCities;
 // };
 
-struct
+struct City
 {
   int Population;
   std::string iata;
   std::string ISO;
   std::string name;
-} City;
+  std::vector<City> c_cities;
+};
