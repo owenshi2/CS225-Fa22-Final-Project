@@ -1,14 +1,22 @@
-CXX = clang++
-INCLUDES=-Iincludes/
-CXX_FLAGS=-std=c++20 -g $(INCLUDES)
+OBJS	= main.o
+SOURCE	= ./src/main.cpp ./src/parser.cpp ./src/cities.cpp
+HEADER	= ./src/parser.h ./src/cities.h
+OUT	= main
+CC	 = g++
+FLAGS	 = -g -c -Wall
 
-exec: src/entry/main
+all: $(OBJS)
+	$(CC) -g $(OBJS) -o $(OUT)
 
-bin/exec:  src/main.cc src/parser.cpp
-	$(CXX) $(CXX_FLAGS) $^ -o $@
+./src/main.o: ./src/main.cpp
+	$(CC) $(FLAGS) ./src/main.cpp 
 
-.DEFAULT_GOAL := exec
-.PHONY: clean
+./src/parser.o: ./src/parser.cpp
+	$(CC) $(FLAGS) ./src/parser.cpp 
+
+./src/cities.o: ./src/cities.cpp
+	$(CC) $(FLAGS) ./src/cities.cpp 
+
 
 clean:
-	rm -f bin/* obj/*
+	rm -f $(OBJS) $(OUT)
