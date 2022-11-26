@@ -21,4 +21,4 @@ main:
 	g++ src/main.cpp src/parser.cpp -o main
 
 clean:
-	rm -f $(OBJS) $(OUT)
+	rm -f *.o main $(OBJS) $(OUT)
