@@ -10,7 +10,8 @@
 
 class Parser
 {
-  std::string file_to_string(const std::string& filename);
-  int SplitString(const std::string & str1, char sep, std::vector<std::string> &fields);
+  public:
+    std::string file_to_string(const std::string& filename);
+    int SplitString(const std::string & str1, char sep, std::vector<std::string> &fields);
   
 };
