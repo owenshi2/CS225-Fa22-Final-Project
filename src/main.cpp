@@ -21,10 +21,33 @@ int main(int argc, char* argv[])
       lines.push_back(crazy);
     }
   }
-  std::cout << lines.size() << std::endl; 
-  for (unsigned i = 0; i < lines.size(); i++)
+  // std::cout << lines.size() << std::endl;
+  // for (unsigned i = 0; i < lines.size(); i++)
+  // {
+  //   std::cout << lines[i];
+  // }
+  std::vector<City> cities;
+  for(unsigned i = 0; i < lines.size(); i++)
   {
-    std::cout << lines[i];
+    int mod4 = i % 4;
+    City cTemp;
+    if(mod4 == 0)
+    {
+      cTemp.ISO = lines[i];//iso
+    } else if(mod4 == 1)
+    {
+      cTemp.iata = lines[i];//iata
+    } else if(mod4 == 2)
+    {
+      cTemp.name = lines[i];//name
+    } else
+    {
+      cTemp.Population = stoi(lines[i]);//population
+    }
+    if(mod4 == 2)
+    {
+      std::cout << "City parse: " << cTemp.name << "; Pop: " << cTemp.Population << std::endl;
+    }
   }
   std::cout << "Work" << std::endl;
 
