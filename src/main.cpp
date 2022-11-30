@@ -24,11 +24,17 @@ std::unordered_map<City, std::vector<City>> graphCreation(const std::string & ci
         while(getline(f, entry2, ',')) {
             inside.push_back(entry2);
         }
+        if (inside.at(3) != "population") {
+        // std::cout << inside.at(3) << std::endl;
+        inside.at(3).pop_back();
+        inside.at(3).pop_back();
+        // std::cout << inside.at(3) << std::endl;
         //create a tuple of data using the ISO, name, and population as extracted from the component vector above
-        std::tuple<std::string, std::string, int> IATATuple = std::make_tuple(inside.at(0), inside.at(2), std::stoul(inside.at(3), nullptr, 10));
-        
+          std::tuple<std::string, std::string, int> IATATuple = std::make_tuple(inside.at(0), inside.at(2), std::stoi(inside.at(3), nullptr, 10));
+
         //add an entry to this output map so we can get the country (ISO), name, and population of a place given the IATA code
-        IATAtoCity.insert(std::make_pair(inside.at(1), IATATuple));
+          IATAtoCity.insert(std::make_pair(inside.at(1), IATATuple));
+        }
     }
 
     /*take the data from the mapping created above and use it to populate the graph*/
