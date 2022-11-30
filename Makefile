@@ -18,7 +18,8 @@
 # 	$(CC) $(FLAGS) ./src/cities.cpp 
 
 main:
-	g++ src/main.cpp src/parser.cpp -o main
+	g++ -std=c++17 src/main.cpp src/cities.cpp -o main
+
 
 clean:
 	rm -f *.o main $(OBJS) $(OUT)
