@@ -17,17 +17,20 @@ std::unordered_map<City, std::vector<City>> graphCreation(const std::string & ci
     /* populate the mapping between an iata code and the relevant city data*/
     while (std::getline(c, line2)) {
         // std::cout << "cities line access" << std::endl;
+        // break down line into components using ',' as the divider
         std::vector<std::string> inside;
         line.erase(remove_if(line2.begin(), line2.end(), isspace), line2.end());
         std::stringstream f(line2);
         while(getline(f, entry2, ',')) {
             inside.push_back(entry2);
         }
-        std::tuple<std::string, std::string, int> IATATuple = std::make_tuple(inside.at(0), inside.at(2), (unsigned) std::stoi(inside.at(3)));
+        //create a tuple of data using the ISO, name, and population as extracted from the component vector above
+        std::tuple<std::string, std::string, int> IATATuple = std::make_tuple(inside.at(0), inside.at(2), std::stoul(inside.at(3), nullptr, 0));
+        //add an entry to this output map so we can get the country (ISO), name, and population of a place given the IATA code
         IATAtoCity.insert(std::make_pair(inside.at(1), IATATuple));
     }
 
-    /*take the data from the last mapping and use it to populate the graph*/
+    /*take the data from the mapping created above and use it to populate the graph*/
     while(std::getline(fli, line)) {
         std::vector<std::string> inside;
         line.erase(remove_if(line.begin(), line.end(), isspace), line.end());
@@ -35,12 +38,16 @@ std::unordered_map<City, std::vector<City>> graphCreation(const std::string & ci
         while(getline(s, entry, ',')) {
             inside.push_back(entry);
         }
-        //going to cross reference this with the cities-data csv to identify a city, add that city to the graph
+        //compartmentalize each line into their components
+        /*going to cross reference this IATA code with the cities-data csv to 
+        identify a city, add that city to the graph*/
         std::string IATA = inside.at(1);
 
         //city creation using the IATA map 
         City temp = makeCity(IATA, IATAtoCity);
         
+        /*if the city in question doesn't exist in the graph, add it, otherwise add the destination locaion
+        to the adjacency list */
         if (graph.count(temp) == 0) {
             std::vector<City> adjacent;
             graph.insert(std::make_pair(temp, adjacent));
