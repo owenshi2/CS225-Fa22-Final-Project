@@ -23,7 +23,7 @@
 
 struct City
 {
-  int Population;
+  std::string Population;
   std::string iata;
   std::string ISO;
   std::string name;
