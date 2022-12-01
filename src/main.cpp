@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <ios>
+#include <assert.h>
 
 int main(int argc, char* argv[])
 {
@@ -22,6 +23,7 @@ int main(int argc, char* argv[])
   //   }
   // }
     std::ifstream  data("src/cities-data.csv");
+    assert(data);
 
     std::string line;
     while(std::getline(data,line))
@@ -32,7 +34,7 @@ int main(int argc, char* argv[])
         {
             // You have a cell!!!!
             lines.push_back(cell);
-            std::cout << cell << std::endl;
+            // std::cout << cell << std::endl;
         }
     }
     
@@ -50,10 +52,13 @@ int main(int argc, char* argv[])
     cTemp.iata = lines[i+1];//iata
     cTemp.name = lines[i+2];//name
     cTemp.Population = lines[i+3];//population
-    std::cout << "City parse: " << cTemp.name << "; Pop: " << cTemp.Population << "; iata: " << cTemp.iata << "; iso: " << cTemp.ISO << std::endl;
+    assert( cTemp.name != "");
+    assert(cTemp.Population != "");
+    assert(cTemp.iata != "");
+    assert(cTemp.ISO != "");
     cities.push_back(cTemp);
+    assert(!cities.empty());
   }
-  std::cout << "Works, number of cities is: " << cities.size() << std::endl;
-
+  assert(cities.size() >= 1);
   return -1;
 }
