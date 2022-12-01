@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
     }
     
     // return result;
-  // std::cout << lines.size() << std::endl;
+  std::cout << lines.size() << std::endl;
   // for (unsigned i = 0; i < lines.size(); i++)
   // {
   //   std::cout << lines[i];
