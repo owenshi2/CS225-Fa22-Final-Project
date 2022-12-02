@@ -27,5 +27,5 @@ struct City
   std::string iata;
   std::string ISO;
   std::string name;
-  std::vector<City> c_cities;
+  std::vector<City*> c_cities;
 };
