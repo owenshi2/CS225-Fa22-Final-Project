@@ -4,6 +4,7 @@
 #include <fstream>
 #include <ios>
 #include <map>
+#include <assert.h>
 
 int main(int argc, char* argv[])
 {
