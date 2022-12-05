@@ -52,27 +52,32 @@ int main(int argc, char* argv[])
   // std::vector<std::string> edges;
   std::ifstream  flights("src/flight-paths.csv");
 
-    std::string path;
-    while(std::getline(flights,path))
-    {
-        std::stringstream  lineStream(path);
-        std::string        value;
-        int ind = 0;
-        std::string prev;
-        while(std::getline(lineStream,value,','))
-        {
-            // You have a cell!!!!
-            if (ind == 1) {
-              prev = value;
-            }
-            if (ind == 2) {
-              cityIata[prev].c_cities.push_back(&(cityIata[value]));
-            }
-            ind++;
-            // std::cout << value << std::endl;
-        }
-    }  
+  std::string path;
+  while(std::getline(flights,path))
+  {
+      std::stringstream  lineStream(path);
+      std::string        value;
+      int ind = 0;
+      std::string prev;
+      while(std::getline(lineStream,value,','))
+      {
+          // You have a cell!!!!
+          if (ind == 1) {
+            prev = value;
+          }
+          if (ind == 2) {
+            cityIata[prev].c_cities.push_back(&(cityIata[value]));
+          }
+          ind++;
+          // std::cout << value << std::endl;
+      }
+  }  
 
-    std::cout<< cityIata["AER"].c_cities.size()<<std::endl;
+  cities.clear();
+  for (const auto &s : cityIata)
+    cities.push_back(s.second);
+  for (int i = 0; i < cities.size(); i++) {
+    std::cout<< cities.at(i).c_cities.size()<< " ";
+  }
   return -1;
 }
