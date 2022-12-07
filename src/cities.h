@@ -1,7 +1,12 @@
 #pragma once
-#include <iostream>
-#include <vector>
+
 #include <string>
+#include <vector>
+#include <iostream>
+#include <iterator>
+#include <algorithm>
+#include <set>
+#include <queue>
 
 // class City
 // {
@@ -24,8 +29,12 @@
 struct City
 {
   std::string Population;
-  std::string iata;
-  std::string ISO;
+  std::string iata; 
+  std::string ISO; 
   std::string name;
   std::vector<City*> c_cities;
+
+  friend bool operator< (const City &left, const City &right);
 };
+
+int bfs(const City& c); 

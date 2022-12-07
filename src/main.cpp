@@ -53,27 +53,72 @@ int main(int argc, char* argv[])
   // std::vector<std::string> edges;
   std::ifstream  flights("src/flight-paths.csv");
 
-    std::string path;
-    while(std::getline(flights,path))
-    {
-        std::stringstream  lineStream(path);
-        std::string        value;
-        int ind = 0;
-        std::string prev;
-        while(std::getline(lineStream,value,','))
-        {
-            // You have a cell!!!!
-            if (ind == 1) {
-              prev = value;
-            }
-            if (ind == 2) {
-              cityIata[prev].c_cities.push_back(&(cityIata[value]));
-            }
-            ind++;
-            // std::cout << value << std::endl;
-        }
-    }  
+  std::string path;
+  while(std::getline(flights,path))
+  {
+      std::stringstream  lineStream(path);
+      std::string        value;
+      int ind = 0;
+      std::string prev;
+      while(std::getline(lineStream,value,','))
+      {
+          // You have a cell!!!!
+          if (ind == 1) {
+            prev = value;
+          }
+          if (ind == 2) {
+            cityIata[prev].c_cities.push_back(&(cityIata[value]));
+          }
+          ind++;
+          // std::cout << value << std::endl;
+      }
+  }  
 
-    std::cout<< cityIata["AER"].c_cities.size()<<std::endl;
-  return -1;
+  cities.clear();
+  for (const auto &s : cityIata)
+    cities.push_back(s.second);
+  // for (int i = 0; i < cities.size(); i++) {
+  //   std::cout<< cities.at(i).c_cities.size()<< " ";
+  // }
+  
+
+  // for (unsigned i = 0; i < cities.size(); i++) {
+  //   std::cout << "name: " << cities[i].name << " "; 
+  //   std::cout << "iata: " << cities[i].iata << " "; 
+  //   std::cout << "ISO: " << cities[i].ISO << " "; 
+  //   std::cout << "population: " << cities[i].Population << " "; 
+  //   std::cout << std::endl;
+  // }
+  
+//test 
+ //drop cities with no airports, no neighbors. Drop empty neighbors too.   
+  std::cout << "original size: " << cities.size() << std::endl; 
+  std::vector<City> cities_new;
+  for (unsigned i = 0; i < cities.size(); i++) {
+    if (cities[i].name.size() != 0 && cities[i].c_cities.size() != 0) {
+      std::vector<City*> c_cities_temp;
+      for (unsigned j = 0; j < cities[i].c_cities.size(); j++) {
+        if (cities[i].c_cities[j]->name.size() != 0 ) {
+          c_cities_temp.push_back(cities[i].c_cities[j]);
+        }
+        cities[i].c_cities = c_cities_temp;
+      }
+      cities_new.push_back(cities[i]);
+    }
+    
+  }
+
+  
+  std::cout << "updated size: " << cities_new.size() << std::endl; 
+
+for (unsigned i = 0; i < cities_new.size(); i++) {
+  for (unsigned j = 0; j < cities_new[i].c_cities.size(); j++) {
+    std::cout << "neighbor check: " << cities_new[i].c_cities[j]->name; 
+  }
+   std::cout << "next" << std::endl; 
+}
+  
+
+  //std::cout << "run bfs:" << bfs(cities_new[0]) << std::endl;
+  return -1;   
 }
