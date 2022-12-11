@@ -1,10 +1,70 @@
 #include "parser.h"
 #include "cities.h"
+#include "minheap.h"
 #include <iostream>
 #include <fstream>
 #include <ios>
 #include <map>
 #include <assert.h>
+
+
+/*GOAL: how to get from one location to another while minimizing infection, conceptually evading detection*/
+
+std::map<std::string, std::string> dijkstra(const City& start, const std::vector<City>& cities) {
+  std::map<std::string, std::string> predecessors; //each node has a predecessor, initiallized null
+
+  std::map<std::string, bool> visited;
+  std::map<std::string, unsigned> dis; /*each node has an associated cost to reach*/
+
+  for (unsigned i = 0; i < cities.size(); ++i) {
+    visited[cities.at(i).name] = false;
+    dis[cities.at(i).name] = (unsigned)-1; /*infinite cost to get to each node initially*/
+  }
+ 
+  dis[start.name] = 0; /*cost to get to first node from first node is 0*/
+
+  std::vector<std::string> steps;
+
+  Heap pq; /*every city except start conceptually initialized with infinite distance*/
+  pq.insert(0, &start);
+
+  while (!pq.empty()) {
+    /*highest priority elem is the one with the lowest cost to reach*/
+    std::pair<unsigned, City*> top = pq.pop();
+  
+    visited[top.second->name] = true;
+
+    for (auto k : top.second->c_cities) {
+      if (visited[k->name]) continue; /*ignore if already visited*/
+      double weight = std::stod(k->Population); /*weighting based off of population*/
+      if ((unsigned)weight + top.first < dis[k->name]) {
+        dis[k->name] = (unsigned) weight + top.first;
+        predecessors[k->name] = top.second->name;
+        pq.insert(dis[k->name], k);
+      }
+    }
+  }
+  return predecessors;
+}
+
+std::vector<std::string> unnoticedTravel(const std::string& start, const std::string& destination,
+                                          const std::vector<City>& cities) {
+  std::map<std::string, City> nameToCity;
+  for (auto c : cities) {
+    nameToCity[c.name] = c;
+  }
+  std::map<std::string, std::string> pred = dijkstra(nameToCity[start], cities);
+  std::string tracker = destination;
+  std::vector<std::string> locations;
+
+  while (tracker != start) {
+    locations.push_back(tracker);
+    tracker = pred[tracker];
+  }
+  std::reverse(locations.begin(), locations.end()); //put the steps in order since we were backtracking
+
+  return locations;
+}
 
 int main(int argc, char* argv[])
 {
@@ -40,12 +100,12 @@ int main(int argc, char* argv[])
     cTemp.iata = lines[i+1];//iata
     cTemp.name = lines[i+2];//name
     cTemp.Population = lines[i+3];//population
-    std::cout << "City parse: " << cTemp.name << "; Pop: " << cTemp.Population << "; iata: " << cTemp.iata << "; iso: " << cTemp.ISO << std::endl;
+   // std::cout << "City parse: " << cTemp.name << "; Pop: " << cTemp.Population << "; iata: " << cTemp.iata << "; iso: " << cTemp.ISO << std::endl;
     cityIata[cTemp.iata] = cTemp;
     cities.push_back(cTemp);
     assert(!cities.empty());
   }
-  std::cout << "Works, number of cities is: " << cities.size() << std::endl;
+  //std::cout << "Works, number of cities is: " << cities.size() << std::endl;
   lines.clear();
 
 

@@ -21,7 +21,7 @@ bool Heap::hasChild(size_t idx) {
     return (idx * 2) < elems.size();
 }
 
-bool Heap::higherPriority(std::pair<unsigned, Cities*> a, std::pair<unsigned, Cities*> b) {
+bool Heap::higherPriority(std::pair<unsigned, City*> a, std::pair<unsigned, City*> b) {
     if (a.first < b.first) return true;
     return false;
 }
@@ -56,10 +56,10 @@ Heap::Heap() {
     elems.push_back(std::make_pair(0, nullptr));
 }
 
-Heap::Heap(const std::vector<std::pair<unsigned, Cities*> b) {
+Heap::Heap(const std::vector<City*>& b) {
     elems.push_back(std::make_pair(0, nullptr));
-    for (auto elem : b) {
-    	elems.push_back(elem);
+    for (unsigned i = 1; i < b.size(); ++i) {
+    	elems.push_back(std::make_pair((unsigned)-1, elem);
     }
     for (size_t idx = elems.size() - 1; idx > 0; idx--) {
     	heapifyDown(idx);
@@ -70,11 +70,11 @@ bool Heap::empty() {
     return elems.size() == 1;
 }
 
-std::pair<unsigned, Cities*> Heap::peek() {
+std::pair<unsigned, City*> Heap::peek() {
     return elems[1];
 }
 
-std::pair<unsigned, Cities*> Heap::pop() {
+std::pair<unsigned, City*> Heap::pop() {
     if (elems.size() == 1) {
         return std::make_pair(0, nullptr);
     }
@@ -83,6 +83,12 @@ std::pair<unsigned, Cities*> Heap::pop() {
     elems.pop_back();
     heapifyDown(1);
     return temp;
+}
+
+void Heap::insert(unsigned dist, City const* c) {
+    std::pair<unsigned, City*> ins = std::make_pair(dist, c);
+    elems.push_back(ins);
+    heapifyUp(elems.size() - 1);
 }
 
 
