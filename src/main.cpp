@@ -48,6 +48,21 @@ int main(int argc, char* argv[])
   std::cout << "Works, number of cities is: " << cities.size() << std::endl;
   lines.clear();
 
+  std::cout << "original size: " << cities.size() << std::endl; 
+  std::vector<City> cities_new;
+  for (unsigned i = 0; i < cities.size(); i++) {
+    if (cities[i].name.size() != 0 && cities[i].c_cities.size() != 0) {
+      std::vector<City*> c_cities_temp;
+      for (unsigned j = 0; j < cities[i].c_cities.size(); j++) {
+        if (cities[i].c_cities[j]->name.size() != 0 ) {
+          c_cities_temp.push_back(cities[i].c_cities[j]);
+        }
+        cities[i].c_cities = c_cities_temp;
+      }
+      cities_new.push_back(cities[i]);
+    }
+    
+  }
 
   //airlines
   // std::vector<std::string> edges;
