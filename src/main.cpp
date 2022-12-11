@@ -10,10 +10,11 @@
 
 /*GOAL: how to get from one location to another while minimizing infection, conceptually evading detection*/
 
-std::map<std::string, std::string> dijkstra(const City& start, const std::vector<City>& cities) {
+std::map<std::string, std::string> dijkstra(const City& start, const std::vector<City>& cities,
+                                            std::map<std::string, City>& nameToCity) {
   std::map<std::string, std::string> predecessors; //each node has a predecessor, initiallized null
 
-  std::map<std::string, bool> visited;
+  std::map<std::string, bool> visited; /*each location can only be visited once*/
   std::map<std::string, unsigned> dis; /*each node has an associated cost to reach*/
 
   for (unsigned i = 0; i < cities.size(); ++i) {
@@ -26,34 +27,38 @@ std::map<std::string, std::string> dijkstra(const City& start, const std::vector
   std::vector<std::string> steps;
 
   Heap pq; /*every city except start conceptually initialized with infinite distance*/
-  pq.insert(0, &start);
+  pq.insert(0, start.name);
 
   while (!pq.empty()) {
     /*highest priority elem is the one with the lowest cost to reach*/
-    std::pair<unsigned, City*> top = pq.pop();
+    std::pair<unsigned, std::string> top = pq.pop();
+    std::cout << "top: " << top.second << std::endl;
   
-    visited[top.second->name] = true;
+    visited[top.second] = true;
 
-    for (auto k : top.second->c_cities) {
+    City topcity = nameToCity[top.second];
+    std::cout << "topcity name: " << topcity.name << std::endl;
+    std::cout << "adj cities size: " << topcity.c_cities.size() << std::endl;
+    
+
+    for (auto k : topcity.c_cities) {
+      std::cout << "adjacent city: " << k->name << std::endl;
       if (visited[k->name]) continue; /*ignore if already visited*/
       double weight = std::stod(k->Population); /*weighting based off of population*/
       if ((unsigned)weight + top.first < dis[k->name]) {
         dis[k->name] = (unsigned) weight + top.first;
-        predecessors[k->name] = top.second->name;
-        pq.insert(dis[k->name], k);
+        predecessors[k->name] = top.second;
+        pq.insert(dis[k->name], k->name);
       }
     }
   }
+  std::cout << "predecessors size: " << predecessors.size() << std::endl;
   return predecessors;
 }
 
 std::vector<std::string> unnoticedTravel(const std::string& start, const std::string& destination,
-                                          const std::vector<City>& cities) {
-  std::map<std::string, City> nameToCity;
-  for (auto c : cities) {
-    nameToCity[c.name] = c;
-  }
-  std::map<std::string, std::string> pred = dijkstra(nameToCity[start], cities);
+                                        std::map<std::string, City>& nameToCity, std::vector<City> cities) {
+  std::map<std::string, std::string> pred = dijkstra(nameToCity[start], cities, nameToCity);
   std::string tracker = destination;
   std::vector<std::string> locations;
 
@@ -69,6 +74,7 @@ std::vector<std::string> unnoticedTravel(const std::string& start, const std::st
 int main(int argc, char* argv[])
 {
   std::map<std::string, City> cityIata;
+  std::map<std::string, City> nameToCity;
   std::vector<std::string> lines;
   std::ifstream  data("src/cities-data.csv");
 
@@ -81,13 +87,13 @@ int main(int argc, char* argv[])
       {
           // You have a cell!!!!
           lines.push_back(cell);
-          std::cout << cell << std::endl;
+          //std::cout << cell << std::endl;
       }
   }
   data.close();
     
     // return result;
-  std::cout << lines.size() << std::endl;
+  //std::cout << lines.size() << std::endl;
   // for (unsigned i = 0; i < lines.size(); i++)
   // {
   //   std::cout << lines[i];
@@ -102,6 +108,7 @@ int main(int argc, char* argv[])
     cTemp.Population = lines[i+3];//population
    // std::cout << "City parse: " << cTemp.name << "; Pop: " << cTemp.Population << "; iata: " << cTemp.iata << "; iso: " << cTemp.ISO << std::endl;
     cityIata[cTemp.iata] = cTemp;
+    nameToCity[cTemp.name] = cTemp;
     cities.push_back(cTemp);
     assert(!cities.empty());
   }
@@ -134,6 +141,11 @@ int main(int argc, char* argv[])
         }
     }  
 
-    std::cout<< cityIata["AER"].c_cities.size()<<std::endl;
+    //std::cout<< cityIata["AER"].c_cities.size()<<std::endl;
+  std::vector<std::string> uT = unnoticedTravel("Chicago", "New York", nameToCity, cities);
+  for (auto el : uT) {
+    std::cout << el << std::endl;
+  }
+
   return -1;
 }

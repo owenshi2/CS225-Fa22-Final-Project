@@ -5,32 +5,32 @@ size_t Heap::root() {
     return 1;
 }
 
-size_t Heap::leftChild(size_t idx) {
+size_t Heap::leftChild(size_t idx) const {
     return idx * 2;
 }
 
-size_t Heap::rightChild(size_t idx) {
+size_t Heap::rightChild(size_t idx) const {
     return idx * 2 + 1;
 }
 
-size_t Heap::parent(size_t idx) {
+size_t Heap::parent(size_t idx) const {
     return idx / 2;
 }
 
-bool Heap::hasChild(size_t idx) {
+bool Heap::hasChild(size_t idx) const {
     return (idx * 2) < elems.size();
 }
 
-bool Heap::higherPriority(std::pair<unsigned, City*> a, std::pair<unsigned, City*> b) {
+bool Heap::higherPriority(std::pair<unsigned, std::string> a, std::pair<unsigned, std::string> b) const {
     if (a.first < b.first) return true;
     return false;
 }
 
-size_t Heap::maxPriorityChild(size_t idx) {
+size_t Heap::maxPriorityChild(size_t idx) const {
     size_t left = leftChild(idx);
     size_t right = rightChild(idx);
     if (right > elems.size()) return left;
-    if higherPriority(elems[left], elems[right]) return left;
+    if (higherPriority(elems[left], elems[right])) return left;
     return right;
 }
 
@@ -53,30 +53,20 @@ void Heap::heapifyUp(size_t currentIdx) {
 }
 
 Heap::Heap() {
-    elems.push_back(std::make_pair(0, nullptr));
-}
-
-Heap::Heap(const std::vector<City*>& b) {
-    elems.push_back(std::make_pair(0, nullptr));
-    for (unsigned i = 1; i < b.size(); ++i) {
-    	elems.push_back(std::make_pair((unsigned)-1, elem);
-    }
-    for (size_t idx = elems.size() - 1; idx > 0; idx--) {
-    	heapifyDown(idx);
-    }
+    elems.push_back(std::make_pair(0, "lasagna"));
 }
 
 bool Heap::empty() {
     return elems.size() == 1;
 }
 
-std::pair<unsigned, City*> Heap::peek() {
+std::pair<unsigned, std::string> Heap::peek() {
     return elems[1];
 }
 
-std::pair<unsigned, City*> Heap::pop() {
+std::pair<unsigned, std::string> Heap::pop() {
     if (elems.size() == 1) {
-        return std::make_pair(0, nullptr);
+        return std::make_pair(0, "lasagna");
     }
     auto temp = elems[1];
     std::swap(elems[1], elems.back());
@@ -85,8 +75,8 @@ std::pair<unsigned, City*> Heap::pop() {
     return temp;
 }
 
-void Heap::insert(unsigned dist, City const* c) {
-    std::pair<unsigned, City*> ins = std::make_pair(dist, c);
+void Heap::insert(unsigned dist, std::string c) {
+    std::pair<unsigned, std::string> ins = std::make_pair(dist, c);
     elems.push_back(ins);
     heapifyUp(elems.size() - 1);
 }
