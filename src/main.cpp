@@ -13,7 +13,7 @@
 std::map<std::string, std::string> dijkstra(const City& start, const std::vector<City>& cities,
                                             std::map<std::string, City>& nameToCity) {
 
-  std::cout << "nc mapping first node adj size: " << std::endl;
+  std::cout << "nc mapping first node adj size: " << (*nameToCity.begin()).second.c_cities.size() << std::endl;
   std::map<std::string, std::string> predecessors; //each node has a predecessor, initiallized null
 
   std::map<std::string, bool> visited; /*each location can only be visited once*/
@@ -59,11 +59,7 @@ std::map<std::string, std::string> dijkstra(const City& start, const std::vector
 }
 
 std::vector<std::string> unnoticedTravel(const std::string& start, const std::string& destination,
-                                        std::vector<City> cities) {
-  std::map<std::string, City> nameToCity;
-  for (auto c : cities) {
-    nameToCity[c.name] = c;
-  }
+                                        std::vector<City> cities, std::map<std::string, City> nameToCity) {
   std::map<std::string, std::string> pred = dijkstra(nameToCity[start], cities, nameToCity);
   std::string tracker = destination;
   std::vector<std::string> locations;
@@ -80,7 +76,6 @@ std::vector<std::string> unnoticedTravel(const std::string& start, const std::st
 int main(int argc, char* argv[])
 {
   std::map<std::string, City> cityIata;
-  std::map<std::string, City> nameToCity;
   std::vector<std::string> lines;
   std::ifstream  data("src/cities-data.csv");
 
@@ -144,11 +139,35 @@ int main(int argc, char* argv[])
             ind++;
             // std::cout << value << std::endl;
         }
-    }  
+    } 
+  std::map<std::string, City> nameToCity;
+  std::vector<City> cities_new;
+  for (unsigned i = 0; i < cities.size(); i++) {
+    if (cities[i].name.size() != 0 && cities[i].c_cities.size() != 0) {
+      std::vector<City*> c_cities_temp;
+      /*initialize the city mapping*/
+      nameToCity[cities[i].name] = cities[i];
+      /*clear out the current c_cities so we can push in the cleaned up version*/
+      nameToCity[cities[i].name].c_cities.clear();
+      for (unsigned j = 0; j < cities[i].c_cities.size(); j++) {
+        std::cout << cities[i].c_cities.size() << std::endl;
+        if (cities[i].c_cities[j]->name.size() != 0 ) {
+          c_cities_temp.push_back(cities[i].c_cities[j]);
+          std::cout << cities[i].c_cities[j]->name;
+          /*push in the cleaned up c_cities*/
+          nameToCity[cities[i].name].c_cities.push_back(cities[i].c_cities[j]);
+        }
+        //cities[i].c_cities = c_cities_temp;          
+      }
+      cities[i].c_cities = c_cities_temp; 
+      
+      cities_new.push_back(cities[i]);
+    }
+  } 
 
     //std::cout<< cityIata["AER"].c_cities.size()<<std::endl;
   std::cout << "nameToCity test: " << std::endl;
-  std::vector<std::string> uT = unnoticedTravel("Chicago", "New York", cities);
+  std::vector<std::string> uT = unnoticedTravel("London", "New York", cities, nameToCity);
   for (auto el : uT) {
     std::cout << el << std::endl;
   }
