@@ -18,31 +18,30 @@ bool operator<(const City &left, const City &right)
 
 
 //traverse the entire to infect population 
-int bfs(const City& c) {
+int bfs(City& c) {
     //initilize variables  
     std::set<std::string> visited;        
-    std::queue<City> neighbors;   
+    std::queue<City*> neighbors;   
     //add the city to visted nodes
     visited.insert(c.name);  
     //add neighbors to the vistied queue 
     for (unsigned i = 0; i < c.c_cities.size(); i++) {
-        neighbors.push(*c.c_cities[i]);     
+        neighbors.push(c.c_cities[i]);     
     } 
     //use queue to traverse the entire graph  
-    int total = 0;  
+    int total = 0;   
     unsigned new_cities = 0; 
-    while (!neighbors.empty()) 
+    while (!neighbors.empty())  
     {
-        City curr = neighbors.front(); 
-        neighbors.front().infection_rate = (float)rand()/RAND_MAX;  //infection rate is not updated correctly 
-        //curr.infection_rate = (float)rand()/RAND_MAX; 
-        visited.insert(curr.name);    
+        City curr = *neighbors.front();  
+        neighbors.front() -> infection_rate = 0; //(float)rand()/RAND_MAX;  //infection rate is not updated correctly 
+        visited.insert(curr.name);      
         std::cout << "name: " << curr.name << std::endl; 
-        neighbors.pop();                      
+        neighbors.pop();                       
         total++;    
         for (unsigned i = 0; i < curr.c_cities.size(); i++) {
             if (visited.find(curr.c_cities[i]->name) == visited.end()) { //see if the ciies are visited or not by checking their names
-                neighbors.push(*curr.c_cities[i]);  
+                neighbors.push(curr.c_cities[i]);  
                 new_cities++;            
             }    
         } 
@@ -73,50 +72,3 @@ int bfs(const City& c) {
     
 }
 
-// #include "cities.h"
-
-
-// #include <fstream>
-// #include <string>
-// #include <vector>
-// #include <iostream>
-// #include <iterator>
-// #include <algorithm>
-// #include <set>
-// #include <queue>
-
-// //need this for a set
-// bool operator<(const City &left, const City &right)
-// {
-//     return left.Population < right.Population;
-// }
-
-// int bfs(const City& c) {
-//     //initilize variables 
-//     std::set<std::string> visited; 
-//     std::queue<City> neighbors; 
-//     //add the city to visted nodes
-//     visited.insert(c.name);  
-//     //add neighbors to the vistied queue 
-//     for (unsigned i = 0; i < c.c_cities.size(); i++) {
-//         neighbors.push(*c.c_cities[i]);     
-//     }
-//     //use queue to traverse the entire graph 
-//     int total = 0; 
-//     while (!neighbors.empty())
-//     {
-//         City curr = neighbors.front(); 
-//         visited.insert(curr.name);
-//         std::cout << "name: " << curr.name << std::endl; 
-//         neighbors.pop(); 
-//         total++; 
-//         for (unsigned i = 0; i < curr.c_cities.size(); i++) {
-//             if (visited.find(curr.c_cities[i]->name) == visited.end()) {
-//                 neighbors.push(*curr.c_cities[i]);
-//             }  
-//         }     
-
-//     }
-//     return total; 
-    
-// }
