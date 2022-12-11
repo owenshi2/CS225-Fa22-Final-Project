@@ -31,8 +31,10 @@ struct City
   std::string Population;
   std::string iata; 
   std::string ISO; 
-  std::string name;
-  std::vector<City*> c_cities;
+  std::string name; 
+  std::vector<City*> c_cities;      
+  
+  double infection_rate;    
 
   friend bool operator< (const City &left, const City &right);
 };
