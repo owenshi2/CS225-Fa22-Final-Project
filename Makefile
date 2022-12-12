@@ -18,7 +18,7 @@
 # 	$(CC) $(FLAGS) ./src/cities.cpp 
 
 main:
-	g++ src/main.cpp src/parser.cpp src/minheap.cpp -g -Wall -Werror  -o main
+	g++ -std=c++17 src/main.cpp src/parser.cpp src/minheap.cpp -g -Wall -Werror  -o main
 
 clean:
 	rm -f *.o main $(OBJS) $(OUT)

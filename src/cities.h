@@ -28,4 +28,7 @@ struct City
   std::string ISO;
   std::string name;
   std::vector<City*> c_cities;
+  double infection_rate = (float)rand()/RAND_MAX;     
+
+  friend bool operator< (const City &left, const City &right);
 };

@@ -112,7 +112,7 @@ int bfs(City& c) {
     while (!neighbors.empty())  
     {
         City curr = *neighbors.front();  
-        neighbors.front() -> infection_rate = 0; //(float)rand()/RAND_MAX;  //infection rate is not updated correctly 
+        neighbors.front() -> infection_rate = curr.infection_rate * .9; //(float)rand()/RAND_MAX;  //infection rate is not updated correctly 
         visited.insert(curr.name);      
         std::cout << "name: " << curr.name << std::endl; 
         neighbors.pop();                       
