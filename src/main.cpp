@@ -10,23 +10,20 @@
 
 /*GOAL: how to get from one location to another while minimizing infection, conceptually evading detection*/
 
-std::map<std::string, std::string> dijkstra(const City& start, const std::vector<City>& cities,
-                                            std::map<std::string, City>& nameToCity) {
+std::map<std::string, std::string> dijkstra(const City& start, std::map<std::string, City>& nameToCity) {
 
-  std::cout << "nc mapping first node adj size: " << (*nameToCity.begin()).second.c_cities.size() << std::endl;
+  //std::cout << "nc mapping first node adj size: " << (*nameToCity.begin()).second.c_cities.size() << std::endl;
   std::map<std::string, std::string> predecessors; //each node has a predecessor, initiallized null
 
   std::map<std::string, bool> visited; /*each location can only be visited once*/
-  std::map<std::string, unsigned> dis; /*each node has an associated cost to reach*/
+  std::map<std::string, size_t> dis; /*each node has an associated cost to reach*/
 
-  for (unsigned i = 0; i < cities.size(); ++i) {
-    visited[cities.at(i).name] = false;
-    dis[cities.at(i).name] = (unsigned)-1; /*infinite cost to get to each node initially*/
+  for (auto it = nameToCity.begin(); it != nameToCity.end(); ++it) {
+    visited[it->first] = false;
+    dis[it->first] = 999999999; /*infinite cost to get to each node initially*/
   }
  
   dis[start.name] = 0; /*cost to get to first node from first node is 0*/
-
-  std::vector<std::string> steps;
 
   Heap pq; /*every city except start conceptually initialized with infinite distance*/
   pq.insert(0, start.name);
@@ -34,40 +31,49 @@ std::map<std::string, std::string> dijkstra(const City& start, const std::vector
   while (!pq.empty()) {
     /*highest priority elem is the one with the lowest cost to reach*/
     std::pair<unsigned, std::string> top = pq.pop();
-    std::cout << "top: " << top.second << std::endl;
+    //std::cout << "top: " << top.second << std::endl;
   
     visited[top.second] = true;
 
     City topcity = nameToCity[top.second];
-
-    std::cout << "topcity name: " << topcity.name << std::endl;
-    std::cout << "adj cities size: " << topcity.c_cities.size() << std::endl;
+    //std::cout << "topcity name: " << topcity.name << std::endl;
+    //std::cout << "adj cities size: " << topcity.c_cities.size() << std::endl;
     
     for (auto k : topcity.c_cities) {
-      std::cout << "adjacent city: " << k->name << std::endl;
+      //std::cout << "adjacent city: " << k->name << std::endl;
       if (visited[k->name]) continue; /*ignore if already visited*/
       double weight = std::stod(k->Population); /*weighting based off of population*/
-      if ((unsigned)weight + top.first < dis[k->name]) {
-        dis[k->name] = (unsigned) weight + top.first;
+      if ((size_t)weight + top.first < dis[k->name]) { /*if there is a better path (smaller cost to get there), update*/
+        dis[k->name] = (size_t) weight + top.first;
         predecessors[k->name] = top.second;
+        std::cout << "pred of " << k->name << ": " << predecessors[k->name] << std::endl;
         pq.insert(dis[k->name], k->name);
       }
     }
   }
-  std::cout << "predecessors size: " << predecessors.size() << std::endl;
   return predecessors;
 }
 
 std::vector<std::string> unnoticedTravel(const std::string& start, const std::string& destination,
-                                        std::vector<City> cities, std::map<std::string, City> nameToCity) {
-  std::map<std::string, std::string> pred = dijkstra(nameToCity[start], cities, nameToCity);
+                                        std::map<std::string, City> nameToCity) {
+  std::map<std::string, std::string> pred = dijkstra(nameToCity[start], nameToCity);
   std::string tracker = destination;
   std::vector<std::string> locations;
+  std::vector<std::string> failure(1, "Your destination airport is not connected to the starting airport.");
 
   while (tracker != start) {
     locations.push_back(tracker);
+    if (tracker != "") {
+      std::cout << "tracker: " << tracker << std::endl;
+      std::cout << "start: " << start << std::endl;
+      std::cout << "predecessor: " << pred[tracker] << std::endl;
+    }
+    if (pred[tracker] == "") {
+      return failure;
+    }
     tracker = pred[tracker];
   }
+  locations.push_back(start);
   std::reverse(locations.begin(), locations.end()); //put the steps in order since we were backtracking
 
   return locations;
@@ -140,6 +146,10 @@ int main(int argc, char* argv[])
             // std::cout << value << std::endl;
         }
     } 
+
+  cities.clear();
+  for (const auto &s : cityIata)
+    cities.push_back(s.second);
   std::map<std::string, City> nameToCity;
   std::vector<City> cities_new;
   for (unsigned i = 0; i < cities.size(); i++) {
@@ -150,10 +160,10 @@ int main(int argc, char* argv[])
       /*clear out the current c_cities so we can push in the cleaned up version*/
       nameToCity[cities[i].name].c_cities.clear();
       for (unsigned j = 0; j < cities[i].c_cities.size(); j++) {
-        std::cout << cities[i].c_cities.size() << std::endl;
+        //std::cout << cities[i].c_cities.size() << std::endl;
         if (cities[i].c_cities[j]->name.size() != 0 ) {
           c_cities_temp.push_back(cities[i].c_cities[j]);
-          std::cout << cities[i].c_cities[j]->name;
+          //std::cout << cities[i].c_cities[j]->name;
           /*push in the cleaned up c_cities*/
           nameToCity[cities[i].name].c_cities.push_back(cities[i].c_cities[j]);
         }
@@ -166,11 +176,13 @@ int main(int argc, char* argv[])
   } 
 
     //std::cout<< cityIata["AER"].c_cities.size()<<std::endl;
-  std::cout << "nameToCity test: " << std::endl;
-  std::vector<std::string> uT = unnoticedTravel("London", "New York", cities, nameToCity);
-  for (auto el : uT) {
-    std::cout << el << std::endl;
+  std::vector<std::string> uT = unnoticedTravel("Chicago", "New York", nameToCity);
+  for (auto elem : uT) {
+    std::cout << elem << std::endl;
   }
+  // for (auto el : uT) {
+  //   std::cout << el << std::endl;
+  // }
 
   return -1;
 }

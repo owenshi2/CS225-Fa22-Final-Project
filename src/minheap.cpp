@@ -1,5 +1,6 @@
 #include "minheap.h"
 #include <cstddef>
+#include <iostream>
 
 size_t Heap::root() {
     return 1;
@@ -29,8 +30,8 @@ bool Heap::higherPriority(std::pair<unsigned, std::string> a, std::pair<unsigned
 size_t Heap::maxPriorityChild(size_t idx) const {
     size_t left = leftChild(idx);
     size_t right = rightChild(idx);
-    if (right > elems.size()) return left;
-    if (higherPriority(elems[left], elems[right])) return left;
+    if (right >= elems.size()) return left;
+    if (higherPriority(elems.at(left), elems.at(right))) return left;
     return right;
 }
 
@@ -66,10 +67,13 @@ std::pair<unsigned, std::string> Heap::peek() {
 
 std::pair<unsigned, std::string> Heap::pop() {
     if (elems.size() == 1) {
-        return std::make_pair(0, "lasagna");
+        std::pair<unsigned, std::string> contingency = std::make_pair(0, "lasagna");
+        return contingency;
     }
-    auto temp = elems[1];
-    std::swap(elems[1], elems.back());
+    auto temp = elems.at(1);
+    std::swap(elems.at(1), elems.back());
+    // std::cout << elems.size() << std::endl;
+    // std::cout << peek().second << std::endl;
     elems.pop_back();
     heapifyDown(1);
     return temp;
