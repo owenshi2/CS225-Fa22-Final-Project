@@ -9,7 +9,7 @@
 class Circuit
 {
   public:
-    void findCircuit(std::vector<City> start)
+    void findCircuit(std::vector<City>& start)
     {
       std::map<std::string, int> edgecount;
       for (int i = 0; i < start.size(); i++)
@@ -24,9 +24,9 @@ class Circuit
       {
         if(edgecount.at(curr_ver.name) > 0)
         {
-          auto it = std::find(start.begin(), start.end(), curr_ver);
+          std::vector<City>::iterator it = std::find(start.begin(), start.end(), curr_ver);
           curr.push(*(*it).c_cities.at((*it).c_cities.size()-1));
-          auto it2 = edgecount.find(curr_ver.name);
+          std::map<std::string, int>::iterator it2 = edgecount.find(curr_ver.name);
           if(it2 != edgecount.end())
           {
             it2->second -= 1;

@@ -1,5 +1,6 @@
-#include "parser.h"
+// #include "parser.h"
 #include "cities.h"
+#include "path.hpp"
 #include <iostream>
 #include <fstream>
 #include <ios>
@@ -90,5 +91,45 @@ int main(int argc, char* argv[])
     }  
 
     std::cout<< cityIata["AER"].c_cities.size()<<std::endl;
+  std::vector<City> eulertest;
+  City a;
+  a.name = "Detroit";
+  City b;
+  b.name = "San Fran";
+  a.c_cities.push_back(&b);
+  b.c_cities.push_back(&a);
+  City c;
+  c.name = "Houston";
+  c.c_cities.push_back(&b);
+  b.c_cities.push_back(&c);
+  City d;
+  d.name = "Albany";
+  d.c_cities.push_back(&c);
+  c.c_cities.push_back(&d);
+  City e;
+  e.name = "Chicago";
+  e.c_cities.push_back(&b);
+  e.c_cities.push_back(&d);
+  b.c_cities.push_back(&e);
+  d.c_cities.push_back(&e);
+  City f;
+  f.name = "Trenton";
+  f.c_cities.push_back(&e);
+  e.c_cities.push_back(&f);
+  City g;
+  g.name = "Dubai";
+  g.c_cities.push_back(&b);
+  g.c_cities.push_back(&f);
+  b.c_cities.push_back(&g);
+  f.c_cities.push_back(&g);
+  eulertest.push_back(a);
+  eulertest.push_back(b);
+  eulertest.push_back(c);
+  eulertest.push_back(d);
+  eulertest.push_back(e);
+  eulertest.push_back(f);
+  eulertest.push_back(g);
+  Circuit euler;
+  euler.findCircuit(eulertest);
   return -1;
 }
