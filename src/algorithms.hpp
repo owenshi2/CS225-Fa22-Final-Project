@@ -81,13 +81,46 @@ std::vector<std::string> unnoticedTravel(const std::string& start, const std::st
   return locations;
 }
 
-// Owen alg
+// Hierhozer algorithm
 
-  std::string hierholzer(std::map<std::string, City>& nameToCity) {
-    Circuit c;
-    if (!c.circuitExists(nameToCity)) {
-      return "This graph is not a Eulerian graph, Hierholzer could not be applied";
-    } else {
-      return c.findCircuit(nameToCity);
-    }
+std::string hierholzer(std::map<std::string, City>& nameToCity) {
+  if (!Circuit.circuitExists(nameToCity)) {
+    return "This graph is not a Eulerian graph, Hierholzer could not be applied";
+  } else {
+    return Circuit.findCircuit(nameToCity);
   }
+}
+
+// BFS algorithm
+
+int bfs(City& c) {
+    //initilize variables  
+    std::set<std::string> visited;        
+    std::queue<City*> neighbors;   
+    //add the city to visted nodes
+    visited.insert(c.name);  
+    //add neighbors to the vistied queue 
+    for (unsigned i = 0; i < c.c_cities.size(); i++) {
+        neighbors.push(c.c_cities[i]);     
+    } 
+    //use queue to traverse the entire graph  
+    int total = 0;   
+    unsigned new_cities = 0; 
+    while (!neighbors.empty())  
+    {
+        City curr = *neighbors.front();  
+        neighbors.front() -> infection_rate = 0; //(float)rand()/RAND_MAX;  //infection rate is not updated correctly 
+        visited.insert(curr.name);      
+        std::cout << "name: " << curr.name << std::endl; 
+        neighbors.pop();                       
+        total++;    
+        for (unsigned i = 0; i < curr.c_cities.size(); i++) {
+            if (visited.find(curr.c_cities[i]->name) == visited.end()) { //see if the ciies are visited or not by checking their names
+                neighbors.push(curr.c_cities[i]);  
+                new_cities++;            
+            }    
+        } 
+    }
+    return total;   
+    
+}
