@@ -84,9 +84,10 @@ std::vector<std::string> unnoticedTravel(const std::string& start, const std::st
 // Owen alg
 
   std::string hierholzer(std::map<std::string, City>& nameToCity) {
-    if (!Circuit.circuitExists(nameToCity)) {
+    Circuit c;
+    if (!c.circuitExists(nameToCity)) {
       return "This graph is not a Eulerian graph, Hierholzer could not be applied";
     } else {
-      return Circuit.findCircuit(nameToCity);
+      return c.findCircuit(nameToCity);
     }
   }

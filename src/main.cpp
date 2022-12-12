@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     cTemp.iata = lines[i+1];//iata
     cTemp.name = lines[i+2];//name
     cTemp.Population = lines[i+3];//population
-    std::cout << "City parse: " << cTemp.name << "; Pop: " << cTemp.Population << "; iata: " << cTemp.iata << "; iso: " << cTemp.ISO << std::endl;
+    //std::cout << "City parse: " << cTemp.name << "; Pop: " << cTemp.Population << "; iata: " << cTemp.iata << "; iso: " << cTemp.ISO << std::endl;
     cityIata[cTemp.iata] = cTemp;
     cities.push_back(cTemp);
     assert(!cities.empty());
@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
     std::cout << elem << std::endl;
   }
 
-
+  std::cout << hierholzer(nameToCity) << std::endl;
 
   // std::vector<City> eulertest;
   // City a;
