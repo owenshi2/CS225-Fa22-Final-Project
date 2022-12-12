@@ -71,6 +71,8 @@
     "ratio": "cpp",
     "stack": "cpp",
     "__tree": "cpp",
-    "map": "cpp"
+    "map": "cpp",
+    "set": "cpp",
+    "variant": "cpp"
   }
 }

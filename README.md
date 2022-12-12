@@ -51,3 +51,8 @@ Keli will use Prims to understand the distances between cities in the graph and 
 Sai will be primarily responsible for getting outputs in a clean and understandable format, primarily in visual graphs if possible. Keli, Larry, and Owen will also be responsible for getting their outputs from their various tasks to be in usable fashion for Sai to implement a graph visualization of the data.
 
 We’ll be adding and dividing these tasks into subtasks as we go.
+
+
+
+**Execution:**
+Navigate to the terminal and run the command 'make'. 

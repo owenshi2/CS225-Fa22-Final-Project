@@ -3,6 +3,7 @@
 #include "algorithms.hpp"
 #include <iostream>
 #include <fstream>
+#include <istream>
 #include <ios>
 #include <map>
 #include <assert.h>
@@ -22,13 +23,13 @@ int main(int argc, char* argv[])
       {
           // You have a cell!!!!
           lines.push_back(cell);
-          std::cout << cell << std::endl;
+          //std::cout << cell << std::endl;
       }
   }
   data.close();
     
     // return result;
-  std::cout << lines.size() << std::endl;
+  //std::cout << lines.size() << std::endl;
   // for (unsigned i = 0; i < lines.size(); i++)
   // {
   //   std::cout << lines[i];
@@ -71,7 +72,6 @@ int main(int argc, char* argv[])
               cityIata[prev].c_cities.push_back(&(cityIata[value]));
             }
             ind++;
-            // std::cout << value << std::endl;
         }
     } 
 
@@ -88,10 +88,8 @@ int main(int argc, char* argv[])
       /*clear out the current c_cities so we can push in the cleaned up version*/
       nameToCity[cities[i].name].c_cities.clear();
       for (unsigned j = 0; j < cities[i].c_cities.size(); j++) {
-        //std::cout << cities[i].c_cities.size() << std::endl;
         if (cities[i].c_cities[j]->name.size() != 0 ) {
           c_cities_temp.push_back(cities[i].c_cities[j]);
-          //std::cout << cities[i].c_cities[j]->name;
           /*push in the cleaned up c_cities*/
           nameToCity[cities[i].name].c_cities.push_back(cities[i].c_cities[j]);
         }
@@ -103,7 +101,23 @@ int main(int argc, char* argv[])
     }
   }
 
-  std::vector<std::string> uT = unnoticedTravel("Chicago", "New York", nameToCity);
+  std::string startingLocation;
+  std::string destination;
+  std::cout << "Let's assume you want to get from one city to another while raising as few alarms as possible. \n Input your starting location (city) now:" << std::endl;
+  std::cin >> startingLocation;
+  std::cout << "Input your destination now: " << std::endl;
+  std::cin >> destination;
+
+  std::vector<std::string> uT = unnoticedTravel(startingLocation, destination, nameToCity);
+
+  std::cout << "Your path of travel will be: " << std::endl;
+  for (auto elem : uT) {
+    std::cout << elem << std::endl;
+  }
+  std::cout << "Happy infecting!" << std::endl;
+
+
+  std::vector<std::string> uT2 = unnoticedTravel("Chicago", "New York", nameToCity);
   for (auto elem : uT) {
     std::cout << elem << std::endl;
   }

@@ -72,8 +72,6 @@ std::pair<unsigned, std::string> Heap::pop() {
     }
     auto temp = elems.at(1);
     std::swap(elems.at(1), elems.back());
-    // std::cout << elems.size() << std::endl;
-    // std::cout << peek().second << std::endl;
     elems.pop_back();
     heapifyDown(1);
     return temp;
