@@ -3,12 +3,13 @@
 #include <map>
 #include "cities.h"
 #include "minheap.h"
+#include "path.hpp"
 #include <ios>
 #include <utility>
 #include <iostream>
 #include <algorithm>
 
-
+// Dijkstra Algorithm
 std::map<std::string, std::string> dijkstra(const City& start, std::map<std::string, City>& nameToCity) {
 
   //std::cout << "nc mapping first node adj size: " << (*nameToCity.begin()).second.c_cities.size() << std::endl;
@@ -79,3 +80,13 @@ std::vector<std::string> unnoticedTravel(const std::string& start, const std::st
 
   return locations;
 }
+
+// Owen alg
+
+  std::string hierholzer(std::map<std::string, City>& nameToCity) {
+    if (!Circuit.circuitExists(nameToCity)) {
+      return "This graph is not a Eulerian graph, Hierholzer could not be applied";
+    } else {
+      return Circuit.findCircuit(nameToCity);
+    }
+  }
