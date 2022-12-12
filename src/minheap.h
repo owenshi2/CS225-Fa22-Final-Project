@@ -2,6 +2,7 @@
 #include <utility>
 #include <string>
 
+#pragma once
 
 /*expectation of a distance to a city and a City*/
 class Heap {
