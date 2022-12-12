@@ -104,7 +104,10 @@ int bfs(City& c) {
     visited.insert(c.name);  
     //add neighbors to the vistied queue 
     for (unsigned i = 0; i < c.c_cities.size(); i++) {
-        neighbors.push(c.c_cities[i]);     
+        neighbors.push(c.c_cities[i]);
+        if (visited.find(c.c_cities[i]->name) == visited.end()) {
+          visited.insert(c.c_cities[i]->name);  
+        }    
     } 
     //use queue to traverse the entire graph  
     int total = 0;   
@@ -115,12 +118,12 @@ int bfs(City& c) {
         neighbors.front() -> infection_rate = curr.infection_rate * .9; //(float)rand()/RAND_MAX;  //infection rate is not updated correctly 
         visited.insert(curr.name);      
         std::cout << "name: " << curr.name << std::endl; 
-        neighbors.pop();                       
+        neighbors.pop();                        
         total++;    
         for (unsigned i = 0; i < curr.c_cities.size(); i++) {
             if (visited.find(curr.c_cities[i]->name) == visited.end()) { //see if the ciies are visited or not by checking their names
                 neighbors.push(curr.c_cities[i]);  
-                new_cities++;            
+                new_cities++;             
             }    
         } 
     }
