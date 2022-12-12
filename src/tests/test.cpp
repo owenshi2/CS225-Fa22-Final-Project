@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 
-TEST_CASE("parser", "[weight=1]")
+TEST_CASE("Parser not empty", "[weight=1]")
 {
     
 }
@@ -42,10 +42,10 @@ TEST_CASE("Hierhozer Algorithm Pass", "[weight=1") {
     eulertest.insert({g.name, g});
     Circuit euler;
     euler.findCircuit(eulertest);
-
+    
 }
 
-TEST_CASE("Hierhozer unconnected cities", "[weight=1]")
+TEST_CASE("Hierhozer non-Eulerian graph check", "[weight=1]")
 {
     
 }

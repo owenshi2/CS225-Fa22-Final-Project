@@ -124,6 +124,8 @@ int bfs(City& c) {
             }    
         } 
     }
-    return total;   
+    std::cout << new_cities <<std::endl;
+    std::cout << total << std::endl;
+    return new_cities;   
     
 }
