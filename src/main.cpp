@@ -73,9 +73,38 @@ int main(int argc, char* argv[])
             ind++;
             // std::cout << value << std::endl;
         }
-    }  
+    } 
 
-    std::cout<< cityIata["AER"].c_cities.size()<<std::endl;
+  cities.clear();
+  for (const auto &s : cityIata)
+    cities.push_back(s.second);
+  std::map<std::string, City> nameToCity;
+  std::vector<City> cities_new;
+  for (unsigned i = 0; i < cities.size(); i++) {
+    if (cities[i].name.size() != 0 && cities[i].c_cities.size() != 0) {
+      std::vector<City*> c_cities_temp;
+      /*initialize the city mapping*/
+      nameToCity[cities[i].name] = cities[i];
+      /*clear out the current c_cities so we can push in the cleaned up version*/
+      nameToCity[cities[i].name].c_cities.clear();
+      for (unsigned j = 0; j < cities[i].c_cities.size(); j++) {
+        //std::cout << cities[i].c_cities.size() << std::endl;
+        if (cities[i].c_cities[j]->name.size() != 0 ) {
+          c_cities_temp.push_back(cities[i].c_cities[j]);
+          //std::cout << cities[i].c_cities[j]->name;
+          /*push in the cleaned up c_cities*/
+          nameToCity[cities[i].name].c_cities.push_back(cities[i].c_cities[j]);
+        }
+        //cities[i].c_cities = c_cities_temp;          
+      }
+      cities[i].c_cities = c_cities_temp; 
+      
+      cities_new.push_back(cities[i]);
+    }
+  } 
+
+
+
   std::vector<City> eulertest;
   City a;
   a.name = "Detroit";
