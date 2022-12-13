@@ -68,9 +68,9 @@ std::vector<std::string> unnoticedTravel(const std::string& start, const std::st
   while (tracker != start) {
     locations.push_back(tracker);
     if (tracker != "") {
-      std::cout << "tracker: " << tracker << std::endl;
-      std::cout << "start: " << start << std::endl;
-      std::cout << "predecessor: " << pred[tracker] << std::endl;
+      // std::cout << "tracker: " << tracker << std::endl;
+      // std::cout << "start: " << start << std::endl;
+      // std::cout << "predecessor: " << pred[tracker] << std::endl;
     }
     if (pred[tracker] == "") {
       return failure;
