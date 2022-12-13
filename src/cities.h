@@ -23,12 +23,12 @@
 
 struct City
 {
-  std::string Population;
+  double Population;
   std::string iata;
   std::string ISO;
   std::string name;
   std::vector<City*> c_cities;
-  double infection_rate = (float)rand()/RAND_MAX;     
+  double infection_rate = 0;     
 
   friend bool operator< (const City &left, const City &right);
 };

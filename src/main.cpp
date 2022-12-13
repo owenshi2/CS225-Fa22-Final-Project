@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
     cTemp.ISO = lines[i];//iso
     cTemp.iata = lines[i+1];//iata
     cTemp.name = lines[i+2];//name
-    cTemp.Population = lines[i+3];//population
+    cTemp.Population = std::stod(lines[i+3]);//population
     //std::cout << "City parse: " << cTemp.name << "; Pop: " << cTemp.Population << "; iata: " << cTemp.iata << "; iso: " << cTemp.ISO << std::endl;
     cityIata[cTemp.iata] = cTemp;
     cities.push_back(cTemp);
@@ -76,32 +76,35 @@ int main(int argc, char* argv[])
     } 
 
   cities.clear();
-  for (const auto &s : cityIata)
-    cities.push_back(s.second);
-  std::map<std::string, City> nameToCity;
-  std::vector<City> cities_new;
-  for (unsigned i = 0; i < cities.size(); i++) {
-    if (cities[i].name.size() != 0 && cities[i].c_cities.size() != 0) {
-      std::vector<City*> c_cities_temp;
-      /*initialize the city mapping*/
-      nameToCity[cities[i].name] = cities[i];
-      /*clear out the current c_cities so we can push in the cleaned up version*/
-      nameToCity[cities[i].name].c_cities.clear();
-      for (unsigned j = 0; j < cities[i].c_cities.size(); j++) {
-        //std::cout << cities[i].c_cities.size() << std::endl;
-        if (cities[i].c_cities[j]->name.size() != 0 ) {
-          c_cities_temp.push_back(cities[i].c_cities[j]);
-          //std::cout << cities[i].c_cities[j]->name;
-          /*push in the cleaned up c_cities*/
-          nameToCity[cities[i].name].c_cities.push_back(cities[i].c_cities[j]);
-        }
-        //cities[i].c_cities = c_cities_temp;          
-      }
-      cities[i].c_cities = c_cities_temp; 
-      
-      cities_new.push_back(cities[i]);
-    }
+  std::map<std::string, City*> nameToCity;
+  for (auto &s : cityIata) {
+      cities.push_back(s.second);
+      nameToCity[s.second.name] = &s.second;
   }
+  
+//   std::vector<City> cities_new;
+//   for (unsigned i = 0; i < cities.size(); i++) {
+//     if (cities[i].name.size() != 0 && cities[i].c_cities.size() != 0) {
+//       std::vector<City*> c_cities_temp;
+//       /*initialize the city mapping*/
+//       nameToCity[cities[i].name] = &cities[i];
+//       /*clear out the current c_cities so we can push in the cleaned up version*/
+//       nameToCity[cities[i].name]->c_cities.clear();
+//       for (unsigned j = 0; j < cities[i].c_cities.size(); j++) {
+//         //std::cout << cities[i].c_cities.size() << std::endl;
+//         if (cities[i].c_cities[j]->name.size() != 0 ) {
+//           c_cities_temp.push_back(cities[i].c_cities[j]);
+//           //std::cout << cities[i].c_cities[j]->name;
+//           /*push in the cleaned up c_cities*/
+//           nameToCity[cities[i].name]->c_cities.push_back(cities[i].c_cities[j]);
+//         }
+//         //cities[i].c_cities = c_cities_temp;          
+//       }
+//       cities[i].c_cities = c_cities_temp; 
+      
+//       cities_new.push_back(cities[i]);
+//     }
+//   }
 
   std::vector<std::string> uT = unnoticedTravel("Chicago", "New York", nameToCity);
   for (auto elem : uT) {
@@ -110,5 +113,9 @@ int main(int argc, char* argv[])
 
   std::cout << hierholzer(nameToCity) << std::endl;
   std::cout << bfs(nameToCity["Chicago"]) << std::endl;
+  std::cout << nameToCity["Chicago"]->c_cities.size() <<std::endl;
+  std::cout << "Chicago" <<std::endl;
+  std::cout << nameToCity["Chicago"]->infection_rate << std::endl;
+  std::cout << nameToCity["New York"]->infection_rate << std::endl;
   return -1;
 }

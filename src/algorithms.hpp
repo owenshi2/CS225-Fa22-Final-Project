@@ -12,7 +12,7 @@
 #include <queue>
 
 // Dijkstra Algorithm
-std::map<std::string, std::string> dijkstra(const City& start, std::map<std::string, City>& nameToCity) {
+std::map<std::string, std::string> dijkstra(const City& start, std::map<std::string, City*>& nameToCity) {
 
   //std::cout << "nc mapping first node adj size: " << (*nameToCity.begin()).second.c_cities.size() << std::endl;
   std::map<std::string, std::string> predecessors; //each node has a predecessor, initiallized null
@@ -37,14 +37,14 @@ std::map<std::string, std::string> dijkstra(const City& start, std::map<std::str
   
     visited[top.second] = true;
 
-    City topcity = nameToCity[top.second];
+    City topcity = *nameToCity[top.second];
     //std::cout << "topcity name: " << topcity.name << std::endl;
     //std::cout << "adj cities size: " << topcity.c_cities.size() << std::endl;
     
     for (auto k : topcity.c_cities) {
       //std::cout << "adjacent city: " << k->name << std::endl;
       if (visited[k->name]) continue; /*ignore if already visited*/
-      double weight = std::stod(k->Population); /*weighting based off of population*/
+      double weight = k->Population; /*weighting based off of population*/
       if ((size_t)weight + top.first < dis[k->name]) { /*if there is a better path (smaller cost to get there), update*/
         dis[k->name] = (size_t) weight + top.first;
         predecessors[k->name] = top.second;
@@ -59,8 +59,8 @@ std::map<std::string, std::string> dijkstra(const City& start, std::map<std::str
 
 
 std::vector<std::string> unnoticedTravel(const std::string& start, const std::string& destination,
-                                        std::map<std::string, City> nameToCity) {
-  std::map<std::string, std::string> pred = dijkstra(nameToCity[start], nameToCity);
+                                        std::map<std::string, City*> nameToCity) {
+  std::map<std::string, std::string> pred = dijkstra(*nameToCity[start], nameToCity);
   std::string tracker = destination;
   std::vector<std::string> locations;
   std::vector<std::string> failure(1, "Your destination airport is not connected to the starting airport.");
@@ -85,7 +85,7 @@ std::vector<std::string> unnoticedTravel(const std::string& start, const std::st
 
 // Hierhozer algorithm
 
-std::string hierholzer(std::map<std::string, City>& nameToCity) {
+std::string hierholzer(std::map<std::string, City*>& nameToCity) {
   Circuit c;
   if (!c.circuitExists(nameToCity)) {
     return "This graph is not a Eulerian graph, Hierholzer could not be applied";
@@ -96,39 +96,36 @@ std::string hierholzer(std::map<std::string, City>& nameToCity) {
 
 // BFS algorithm
 
-int bfs(City& c) {
+int bfs(City* &c) {
+    c->infection_rate = 1;
     //initilize variables  
     std::set<std::string> visited;        
     std::queue<City*> neighbors;   
     //add the city to visted nodes
-    visited.insert(c.name);  
+    visited.insert(c->name);  
     //add neighbors to the vistied queue 
-    for (unsigned i = 0; i < c.c_cities.size(); i++) {
-        neighbors.push(c.c_cities[i]);
-        if (visited.find(c.c_cities[i]->name) == visited.end()) {
-          visited.insert(c.c_cities[i]->name);  
+    for (unsigned i = 0; i < c->c_cities.size(); i++) {
+        neighbors.push(c->c_cities[i]);
+        c->c_cities[i]->infection_rate = 0.5;
+        if (visited.find(c->c_cities[i]->name) == visited.end()) {
+          visited.insert(c->c_cities[i]->name);  
         }    
     } 
     //use queue to traverse the entire graph  
-    int total = 0;   
-    unsigned new_cities = 0; 
     while (!neighbors.empty())  
     {
         City curr = *neighbors.front();  
-        neighbors.front() -> infection_rate = curr.infection_rate * .9; //(float)rand()/RAND_MAX;  //infection rate is not updated correctly 
         visited.insert(curr.name);      
-        std::cout << "name: " << curr.name << std::endl; 
-        neighbors.pop();                        
-        total++;    
+        neighbors.pop();                          
         for (unsigned i = 0; i < curr.c_cities.size(); i++) {
+          if (curr.c_cities[i] == 0) {
+            curr.c_cities[i] -> infection_rate = curr.infection_rate * .5;
+          }
             if (visited.find(curr.c_cities[i]->name) == visited.end()) { //see if the ciies are visited or not by checking their names
                 neighbors.push(curr.c_cities[i]);  
-                new_cities++;             
             }    
         } 
     }
-    std::cout << new_cities <<std::endl;
-    std::cout << total << std::endl;
-    return new_cities;   
+    return visited.size();   
     
 }
