@@ -15,20 +15,10 @@ int main(int argc, char* argv[])
     nameToCity[s.second.name] = &s.second;
   }
 
-  std::string startingLocation;
-  std::string destination;
-  std::getline(std::cin, startingLocation);
-  std::cout << "Input your destination now: " << std::endl;
-  std::getline(std::cin, destination);
-
-
-  std::vector<std::string> uT = unnoticedTravel(startingLocation, destination, nameToCity);
-  std::cout << "Your path of travel will be: " << std::endl;
+  std::vector<std::string> uT = unnoticedTravel("Chicago", "New York", nameToCity);
   for (auto elem : uT) {
     std::cout << elem << std::endl;
   }
-  std::cout << "Happy infecting!" << std::endl;
-
   std::cout << hierholzer(nameToCity) << std::endl;
   std::cout << bfs(nameToCity["Chicago"]) << std::endl;
   std::cout << nameToCity["Chicago"]->c_cities.size() <<std::endl;

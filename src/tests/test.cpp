@@ -1,4 +1,4 @@
-#include "catch2/catch_test_macros.hpp"
+#include "catch2/catch_amalgamated.hpp"
 #include "src/minheap.h"
 #include "src/parser.h"
 #include "src/path.hpp"

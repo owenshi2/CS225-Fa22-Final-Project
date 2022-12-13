@@ -16,13 +16,11 @@ std::map<std::string, City> CreateGraph(const std::string& city, const std::stri
       {
           // You have a cell!!!!
           lines.push_back(cell);
-          std::cout << cell << std::endl;
       }
   }
   data.close();
     
   // Takes parsed city csv and converts to struct nodes
-  std::cout << lines.size() << std::endl;
   std::vector<City> cities;
   for(unsigned i = 4; i < lines.size(); i+=4)
   {
@@ -36,7 +34,6 @@ std::map<std::string, City> CreateGraph(const std::string& city, const std::stri
     cities.push_back(cTemp);
     assert(!cities.empty());
   }
-  std::cout << "Works, number of cities is: " << cities.size() << std::endl;
   lines.clear(); 
 
   // Parse flight information and create 
