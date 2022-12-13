@@ -12,7 +12,7 @@ US,JFK,New York,18713220.0
 US,BWL,Blackwell,6562.0
 US,FOB,Fort Bragg,10374.0
 US,PUL,Poulsbo,11168.0
-US,CCD,Los Angeles,12750807.0
+US,LAX,Los Angeles,12750807.0
 US,REE,Lubbock,267648.0
 US,MXG,Marlboro,39982.0
 ES,AEI,Algeciras,122982.0
@@ -54,7 +54,7 @@ PG,WWK,Wewak,25143.0
 PG,WUG,Wau,163442.0
 PG,SMJ,Sim,12893.0
 US,AYZ,Amityville,9399.0
-AZ,ZXT,Baku,2181800.0
+AZ,GYD,Baku,2181800.0
 US,BKG,Branson,25033.0
 US,ILL,Willmar,20510.0
 DE,BER,Berlin,3664088.0
@@ -124,7 +124,7 @@ CN,DDG,Dandong,2444697.0
 CN,NTG,Nantong,7283622.0
 CA,YPD,Parry Sound,6408.0
 CA,XBR,Brockville,21854.0
-CO,PRM,Bogota,7743955.0
+CO,BOG,Bogota,7743955.0
 CO,ARQ,Arauquita,41309.0
 CO,LCR,La Chorrera,68896.0
 CA,SSQ,La Sarre,7719.0
@@ -245,7 +245,7 @@ CA,YXK,Rimouski,48664.0
 CA,YXL,Sioux Lookout,5272.0
 CA,YXS,Prince George,74003.0
 CA,YXT,Terrace,15723.0
-CA,YXU,London,11120000.0
+CA,LHR,London,11120000.0
 CA,YXX,Abbotsford,141397.0
 CA,YXY,Whitehorse,25085.0
 CA,YYB,North Bay,51553.0
@@ -566,7 +566,7 @@ ZA,CDO,Cradock,32898.0
 ZA,CPT,Cape Town,433688.0
 ZA,ELS,East London,338627.0
 ZA,GRJ,George,157394.0
-ZA,QRA,Johannesburg,4434827.0
+ZA,JNB,Johannesburg,4434827.0
 ZA,KXE,Klerksdorp,178921.0
 ZA,KIM,Kimberley,165264.0
 ZA,KOF,Komatipoort,20508.0

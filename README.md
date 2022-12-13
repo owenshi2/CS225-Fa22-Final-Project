@@ -54,5 +54,11 @@ We’ll be adding and dividing these tasks into subtasks as we go.
 
 
 
-**Execution:**
-Navigate to the terminal and run the command 'make'. 
+**Running Instructions:**
+Git pull or git copy this project from https://github.com/owenshi2/CS225-Fa22-Final-Project into your preferred IDE using its terminal. Navigate to the terminal and run the command 'make'. To run tests, input ./test. To run our intended user interface, run ./main. When running the user interface, you will be prompted to input arguments into the terminal. Do so knowing that our implementation is CASE SENSITIVE.
+
+NOTE: One algorithm (Dijkstra) is dependent on connections between specific, modern airports. Our cities-data CSV opts to assign either heliports or deprecated airports to those CSVs rather than well known airports and can conflict with our flight-paths CSV. The flight-paths CSV is additionally missing some notable locations (e.g. Berlin). Consequently, some expected city relationships may be identified as nonexistent when in reality that isn't the case.
+
+Some recommended locations for input are:
+Accra, Bogota, Chicago, New York, Beijing, Brindisi, New Delhi, Shanghai, Bergen, Stockholm, Palanga, Cape Town, Baltimore, Kumasi, Sunyani, Columbia, Campo Grande, Guarapuava, Souda, Treviso, Memmingen, Shannon, Porto Seguro, Lisbon, Campinas, Pisa, Port Louis, Newark, Souda, Weeze, Riga, Calgary, Huangshan, Yichun, Kimberley, Pietermaritzburg, Kunming, Phuket, St. Petersburg, Zurich, Valletta, Yellowknife, Edmonton
+
