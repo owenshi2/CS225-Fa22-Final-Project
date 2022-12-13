@@ -7,10 +7,9 @@
 #include <iterator>
 #include <algorithm>
 #include <sstream>
+#include <fstream>
+#include <ios>
+#include <map>
+#include "cities.h"
 
-class Parser
-{
-  std::string file_to_string(const std::string& filename);
-  int SplitString(const std::string & str1, char sep, std::vector<std::string> &fields);
-  
-};
+std::map<std::string, City> CreateGraph(const std::string& city, const std::string& flight);

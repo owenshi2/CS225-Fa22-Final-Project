@@ -1,65 +1,69 @@
-#include "cities.h"
 #include "parser.h"
 
-using std::string;
-// using std::vector;
-using std::ifstream;
-using std::cout;
-using std::endl;
-using std::feof;
-
-ifstream words("entry/cities-data.csv");
-std::vector<string> out; 
-
-// if (words.is_open()) {   
-//     std::istream_iterator<string> word_iter(words);
-//     while (!words.eof()) {
-//         out.push_back(remove_punct(*word_iter));
-//         ++word_iter;  
-//     }
-// } 
-
-// std::vector<std::string> getEmAndSplitEm(std::istream& str)
-// {
-//   std::vector<std::string> result;
-//   std::string line;
-//   std::getline(str,line);
-//   std::stringstream lineStream(line);
-//   std::string cell;
-//   while(std::getline(lineStream,cell, ','))
-//   {
-//     result.push_back(cell);
-//   }
-//   if (!lineStream && cell.empty())
-//   {
-//     result.push_back("");
-//   }
-//   return result;
-// }
-
-
-std::string text;
-ifstream read;
-std::string Parser::file_to_string(const std::string& filename)
+std::map<std::string, City> CreateGraph(const std::string& city, const std::string& flight)
 {
-  std::ifstream text(filename);
-  std::stringstream strStream;
-  if (text.is_open())
-  {
-    strStream << text.rdbuf();
-  }
-  return strStream.str();  
-}
+  //City parser
+  std::map<std::string, City> cityIata;
+  std::vector<std::string> lines;
+  std::ifstream  data(city);
 
-int Parser::SplitString(const std::string & str1, char sep, std::vector<std::string> &fields)
-{
-  std::string str = str1;
-  std::string::size_type pos;
-  while((pos=str.find(sep)) != std::string::npos)
+  std::string line;
+  while(std::getline(data,line))
   {
-    fields.push_back(str.substr(0,pos));
-    str.erase(0,pos+1);   
+      std::stringstream  lineStream(line);
+      std::string        cell;
+      while(std::getline(lineStream,cell,','))
+      {
+          // You have a cell!!!!
+          lines.push_back(cell);
+          std::cout << cell << std::endl;
+      }
   }
-  fields.push_back(str);  
-  return fields.size();
+  data.close();
+    
+  // Takes parsed city csv and converts to struct nodes
+  std::cout << lines.size() << std::endl;
+  std::vector<City> cities;
+  for(unsigned i = 4; i < lines.size(); i+=4)
+  {
+    City cTemp;
+    cTemp.ISO = lines[i];//iso
+    cTemp.iata = lines[i+1];//iata
+    cTemp.name = lines[i+2];//name
+    cTemp.Population = std::stod(lines[i+3]);//population
+    //std::cout << "City parse: " << cTemp.name << "; Pop: " << cTemp.Population << "; iata: " << cTemp.iata << "; iso: " << cTemp.ISO << std::endl;
+    cityIata[cTemp.iata] = cTemp;
+    cities.push_back(cTemp);
+    assert(!cities.empty());
+  }
+  std::cout << "Works, number of cities is: " << cities.size() << std::endl;
+  lines.clear(); 
+
+  // Parse flight information and create 
+
+  std::ifstream  flights(flight);
+
+  std::string path;
+  while(std::getline(flights,path))
+  {
+    std::stringstream  lineStream(path);
+    std::string        value;
+    int ind = 0;
+    std::string prev;
+    while(std::getline(lineStream,value,','))
+    {
+      // You have a cell!!!!
+      if (ind == 1) {
+        prev = value;
+      }
+      if (ind == 2) {
+        cityIata[prev].c_cities.push_back(&(cityIata[value]));
+      }
+      ind++;
+      // std::cout << value << std::endl;
+    }
+  } 
+
+  return cityIata;  
+
 }
