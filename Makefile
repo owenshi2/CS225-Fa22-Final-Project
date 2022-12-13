@@ -20,5 +20,8 @@
 main:
 	g++ -std=c++17 src/main.cpp src/parser.cpp src/minheap.cpp -g -Wall -Werror  -o main
 
+test:
+	g++ -std=c++17 src/tests/test.cpp src/parser.cpp src/minheap.cpp -g -Wall -Werror  -o test
+
 clean:
 	rm -f *.o main $(OBJS) $(OUT)
