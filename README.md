@@ -2,23 +2,38 @@
 **Video Link**
 https://mediaspace.illinois.edu/edit/1_ofn1oq5t
 
-**Leading Question**: 
+## **Leading Question**: 
  Our dataset analysis program aims to simulate a virgin-soil environmental epidemic spread through multiarray infection vectors. The data will include the node values as the population of major cities of the world and feature a graph structure using flight data representing the edges. We will use a public csv file from Openflights and consider the adjacent nodes as direct flights from one city to another. We aim to simulate how long it takes for a city’s infection to reach another city (BFS). 
  
  A representation of developed immunity will be accomplished through the use of Heirholzer’s algorithm, where the detection of repeat visits to a node will factor into the node’s resistance towards infection. Prim’s algorithm offers us a minimum spanning tree of our graph, providing optimal paths for the infection to travel from any one starting node. This can subsequently be outputted as a vector of visited nodes. 
  
+## **Running Instructions:**
+Git pull or git copy this project from https://github.com/owenshi2/CS225-Fa22-Final-Project into your preferred IDE using its terminal. Navigate to the terminal and run the command 'make'. To run tests, input ./test. To run our intended user interface, run ./main. When running the user interface, you will be prompted to input arguments into the terminal. Do so knowing that our implementation is CASE SENSITIVE.
 
-**Input Datasets**: Our project is reliant on two data sets: flight data from major airports and population data from major cities. Both are stored as CSVs, with the former formatted as “Airport ID, Name, City, Country, IATA Code, ICAO code, Latitude, Longitude, Altitude, Timezone, DST, Tz database time zone, Type, Source” and the latter formatted as “city, city_ascii, latitude, longitude, country, 2 letter country abbreviation, 3 letter country abbreviation, admin_name, admin_code, capital, population, population density”. The population data set contains  approximately 43,000 entries, and we are only concerned with the subset of data dealing with the name of each city, so we can name corresponding vertices, and the populations, so we can have corresponding populations to modify as our hypothetical disease spreads.
+NOTE: One algorithm (Dijkstra) is dependent on connections between specific, modern airports. Our cities-data CSV opts to assign either heliports or deprecated airports to those CSVs rather than well known airports and can conflict with our flight-paths CSV. The flight-paths CSV is additionally missing some notable locations (e.g. Berlin). Consequently, some expected city relationships may be identified as nonexistent when in reality that isn't the case.
+
+Some recommended locations for input are:
+Accra, Bogota, Chicago, New York, Beijing, Brindisi, New Delhi, Shanghai, Bergen, Stockholm, Palanga, Cape Town, Baltimore, Kumasi, Sunyani, Columbia, Campo Grande, Guarapuava, Souda, Treviso, Memmingen, Shannon, Porto Seguro, Lisbon, Campinas, Pisa, Port Louis, Newark, Souda, Weeze, Riga, Calgary, Huangshan, Yichun, Kimberley, Pietermaritzburg, Kunming, Phuket, St. Petersburg, Zurich, Valletta, Yellowknife, Edmonton
+
+The catch2 framework could not be implemented and the usage of <cassert> / "assert.h" were similarly problematic. As a result, the testing will output print statements corresponding to the success or failure of different tests.
+
+## **Organization**:
+The Makefile and Project Proposal are attached to the root directory of this project. A link to the project presentation exists at the top of this README. Underneath that are the instructions for running this project. The algorithms required for the project are all located in the algorithms.hpp file within the source (src) folder. Any class dependencies, such as "minheap.h" are also stored in the source folder and are included in the algorithms.hpp file. Our datasets are stored in the source directory. The written report can be found in the results.md file in the source directory.
 
 
-**Data Correction**: since city names are provided in ascii format (free from accents and other linguistic nuances), we can search for pairs of airport locations and cities within each data set and disregard instances where either we do not have the population data for a certain city which exists in the airport data set or we do not have the flight data for a particular city. This can be done with a map of locations to booleans representing whether or not pairs are present and the CSVs themselves can be parsed line by line.
+## **Input Datasets**:
+Our project is reliant on two data sets: flight data from major airports and population data from major cities. Both are stored as CSVs, with the former formatted as “Airport ID, Name, City, Country, IATA Code, ICAO code, Latitude, Longitude, Altitude, Timezone, DST, Tz database time zone, Type, Source” and the latter formatted as “city, city_ascii, latitude, longitude, country, 2 letter country abbreviation, 3 letter country abbreviation, admin_name, admin_code, capital, population, population density”. The population data set contains  approximately 43,000 entries, and we are only concerned with the subset of data dealing with the name of each city, so we can name corresponding vertices, and the populations, so we can have corresponding populations to modify as our hypothetical disease spreads.
+
+
+## **Data Correction**:
+since city names are provided in ascii format (free from accents and other linguistic nuances), we can search for pairs of airport locations and cities within each data set and disregard instances where either we do not have the population data for a certain city which exists in the airport data set or we do not have the flight data for a particular city. This can be done with a map of locations to booleans representing whether or not pairs are present and the CSVs themselves can be parsed line by line.
 
 **Data Storage:**
 
 Map: O(m) where m represents the maximum number of cities between the two data sets (43,000).
 
 
-**Algorithms**
+## **Algorithms**
 There will be three algorithms that we’ll cover with our program. To start, for all three algorithms the expected inputs for the graph include the major cities in the world and the distances as flight paths between them. The cities will be converted to nodes and the distance in between them as weighted edges. We will be doing a BFS traversal, where an infection rate for each city node in the graph will be included in addition to updating other important information about the node from the default values.
 
 
@@ -30,13 +45,14 @@ To parse the edge data even further, we’ll be running Prim’s algorithm to de
 
 Finally, we’ll narrow down the graph under the specification of airlines shutting down after one flight to form an Euler’s Path problem. To find the Euler circuit, we’ll first have an algorithm that removes edges of nodes to make an even degree (if a node has a degree one, we’ll disregard the node and deem the country unreachable). Afterwards, we’ll then run Hierholzer’s algorithm to calculate an Euler Circuit across the globe. With the respective time complexity, adjusting the edges would be expected as O(v) with v as the vertices as we just need to visit each vertice and remove a node if need be; as for the time complexity of Hierholzer’s algorithm, visiting each remaining edge once would result in a time complexity of O(e) with e being the edges. We aim to be precise with the Euler Circuit algorithm as a full traversal is necessary. For the expected output of the Euler Circuit algorithm, we’ll have a graph data set that is representative as the Euler Circuit.
 
-**Function runtime efficiency:** 
+## **Function runtime efficiency:**
+
 E: edge, V: vertex/nodes 
 BFS for infection rates: O(V + E)  
 Covered: Prim’s based on distance weights. O(V2)
 Uncovered: Euler’s: O(E) using Heirholzer’s algorithm or O(E2) using Fleury’s. We intend on using Heirholzer’s, where we consider double visitation to be the condition for a location developing a vaccine/immunity.
 
-##Timeline
+## Timeline
 
 **Week 1**: Acquire and process data
 Owen will focus on finding the necessary datasets while Sai, Keli, and Larry focus on preparing the csv data and ensure that all the data is accessible and usable to put into C++ data structures. We are also working on the proposal regrade and changing the project as needed.
