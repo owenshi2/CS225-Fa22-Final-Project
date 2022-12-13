@@ -48,9 +48,12 @@ Finally, we’ll narrow down the graph under the specification of airlines shutt
 
 ## **Function runtime efficiency:**
 
-E: edge, V: vertex/nodes 
-BFS for infection rates: O(V + E)  
+E: edge, V: vertex/nodes
+ 
+BFS for infection rates: O(V + E)
+ 
 Covered: Dijkstra's. O(Vlogv + ElogV)
+ 
 Uncovered: Euler’s: O(E) using Heirholzer’s algorithm or O(E2) using Fleury’s. We intend on using Heirholzer’s, where we consider double visitation to be the condition for a location developing a vaccine/immunity.
 
 ## Timeline
