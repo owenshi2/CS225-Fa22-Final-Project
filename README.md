@@ -1,6 +1,6 @@
 # CS225-Fa22-Final-Project
 **Video Link**
-[https://mediaspace.illinois.edu/edit/1_ofn1oq5t](https://youtu.be/90ZGbjKktXU)
+https://youtu.be/90ZGbjKktXU
 
 ## **Leading Question**: 
  Our dataset analysis program aims to simulate a virgin-soil environmental epidemic spread through multiarray infection vectors. The data will include the node values as the population of major cities of the world and feature a graph structure using flight data representing the edges. We will use a public csv file from Openflights and consider the adjacent nodes as direct flights from one city to another. We aim to simulate how long it takes for a city’s infection to reach another city (BFS). 
